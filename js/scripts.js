@@ -107,6 +107,25 @@ modalPAddress.innerHTML = '123 Portland Ave., Portland, OR 97204';
 const modalPBirthday = document.createElement('p');
 modalPBirthday.setAttribute('class', 'modal-text');
 modalPBirthday.innerHTML = 'Birthday: 10/21/2015';
+
+// EXCEEDS
+// TODO Modal Button Container
+const prevNextContainer = document.createElement('div');
+prevNextContainer.setAttribute('class', 'modal-btn-container');
+const modalPrevBtn = document.createElement('button');
+modalPrevBtn.setAttribute('type', 'button');
+modalPrevBtn.setAttribute('id', 'modal-prev');
+modalPrevBtn.setAttribute('class', 'modal-prev btn');
+modalPrevBtn.innerHTML = 'Prev';
+const modalNextBtn = document.createElement('button');
+modalNextBtn.setAttribute('type', 'button');
+modalNextBtn.setAttribute('id', 'modal-next');
+modalNextBtn.setAttribute('class', 'modal-next btn');
+modalNextBtn.innerHTML = 'Next';
+// TODO Previous Button
+// TODO Next Button
+
+
 // Assembly
 modalInfoContainer.appendChild(modalImage);
 modalInfoContainer.appendChild(modalH);
@@ -117,20 +136,16 @@ modalInfoContainer.appendChild(modalPPhone);
 modalInfoContainer.appendChild(modalPAddress);
 modalInfoContainer.appendChild(modalPBirthday);
 
+prevNextContainer.appendChild(modalPrevBtn);
+prevNextContainer.appendChild(modalNextBtn);
+
 modalObject.appendChild(modalInfoContainer);
 modalObject.appendChild(closeButton);
 
 modalContainer.appendChild(modalObject);
+modalContainer.appendChild(prevNextContainer);
+
+
 
 // TODO Add it to the page
 gallery.after(modalContainer);
-
-
-// use after()
-
-
-
-// EXCEEDS
-// TODO Modal Button Container
-// TODO Previous Button
-// TODO Next Button
