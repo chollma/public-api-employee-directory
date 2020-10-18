@@ -27,47 +27,66 @@ searchContainer.appendChild(form);
 
 // --------------------------------------------------------
 
-// GALLERY -- will need data from JSON + iteration
+// Fetch Request
 
-// Create holding container
-const card = document.createElement('div');
-card.setAttribute('class', 'card');
+fetch('https://randomuser.me/api/?results=10')
+    .then(response => response.json())
+    .then(data => generateCard(data.results)); // push data into a helper function that will create the card
 
-// Create child image container
-const imageContainer = document.createElement('div');
-imageContainer.setAttribute('class', 'card-img-container');
-const img = document.createElement('img');
-img.setAttribute('src', 'https://placehold.it/90x90');
-img.setAttribute('alt', 'profile picture');
-imageContainer.appendChild(img);
 
-// Create an information container
-const infoContainer = document.createElement('div');
-infoContainer.setAttribute('class', 'card-info-container');
-const h = document.createElement('h3');
-h.setAttribute('id', 'name');
-h.setAttribute('class', 'card-name cap');
-h.innerHTML = 'first last';
-const cardText = document.createElement('p');
-cardText.setAttribute('class', 'card-text');
-cardText.innerHTML = 'email';
-const cardTextCap = document.createElement('p');
-cardTextCap.setAttribute('class', 'card-text cap');
-cardTextCap.innerHTML = 'city, state';
-infoContainer.appendChild(h);
-infoContainer.appendChild(cardText);
-infoContainer.appendChild(cardTextCap);
-const gallery = document.getElementById('gallery');
+function generateCard(data) {
+    for (i = 0; i < data.length; i++) {
+        // Create the card to hold the info
+        const card = document.createElement('div');
+        card.setAttribute('class', 'card');
+        // Get thumbnail image
+        console.log();
+        // Create the image container
+        const imageContainer = document.createElement('div');
+        imageContainer.setAttribute('class', 'card-img-container');
+        const img = document.createElement('img');
+        img.setAttribute('class', 'card-img');
+        img.setAttribute('src', data[i].picture.large);
+        img.setAttribute('alt', 'profile picture');
+        imageContainer.appendChild(img);
 
-// Add it to the page
-gallery.appendChild(card);
-card.appendChild(imageContainer);
-card.appendChild(infoContainer);
+        const infoContainer = document.createElement('div');
+        infoContainer.setAttribute('class', 'card-info-container');
+        const h = document.createElement('h3');
+        h.setAttribute('id', 'name');
+        h.setAttribute('class', 'card-name cap');
+        h.innerHTML = data[i].name.first + ' ' + data[i].name.last;
+        const cardText = document.createElement('p');
+        cardText.setAttribute('class', 'card-text');
+        cardText.innerHTML = data[i].email;
+        const cardTextCap = document.createElement('p');
+        cardTextCap.setAttribute('class', 'card-text cap');
+        cardTextCap.innerHTML = data[i].location.city + ', ' + data[i].location.state;
+        infoContainer.appendChild(h);
+        infoContainer.appendChild(cardText);
+        infoContainer.appendChild(cardTextCap);
+        const gallery = document.getElementById('gallery');
+
+
+
+
+        gallery.appendChild(card);
+        card.appendChild(imageContainer);
+        card.appendChild(infoContainer);
+
+
+
+
+    }
+
+}
+
 
 // MODAL
 
 const modalContainer = document.createElement('div');
 modalContainer.setAttribute('class', 'modal-container');
+modalContainer.hidden = true;
 const modalObject = document.createElement('div');
 modalObject.setAttribute('class', 'modal');
 const closeButton = document.createElement('button');
@@ -75,6 +94,9 @@ closeButton.setAttribute('type', 'button');
 closeButton.setAttribute('id', 'modal-close-btn');
 closeButton.setAttribute('class', 'modal-close-btn');
 closeButton.innerHTML = '<strong>X</strong>';
+closeButton.addEventListener('click', () => {
+    modalContainer.hidden = true;
+})
 const modalInfoContainer = document.createElement('div');
 modalInfoContainer.setAttribute('class', 'modal-info-container');
 
