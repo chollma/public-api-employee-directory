@@ -6,22 +6,26 @@ const form = document.createElement('form');
 form.setAttribute('action', '#');
 form.setAttribute('method', 'get');
 
-// Add inputs
+// Add search box
 const searchBox = document.createElement('input');
 searchBox.setAttribute('type', 'search');
 searchBox.setAttribute('id', 'search-input');
 searchBox.setAttribute('class', 'search-input');
 searchBox.setAttribute('placeholder', 'Search...');
+// Add go button
 const submit = document.createElement('input');
 submit.setAttribute('type', 'submit');
 submit.setAttribute('value', 'Go');
 submit.setAttribute('id', 'search-submit');
 submit.setAttribute('class', 'search-submit');
+// Add button and search box to DOM
 form.appendChild(searchBox);
 form.appendChild(submit);
 
 // Add it to the page
 searchContainer.appendChild(form);
+
+// --------------------------------------------------------
 
 // GALLERY -- will need data from JSON + iteration
 
@@ -62,7 +66,6 @@ card.appendChild(infoContainer);
 
 // MODAL
 
-// TODO Modal Container
 const modalContainer = document.createElement('div');
 modalContainer.setAttribute('class', 'modal-container');
 const modalObject = document.createElement('div');
@@ -122,19 +125,14 @@ modalNextBtn.setAttribute('type', 'button');
 modalNextBtn.setAttribute('id', 'modal-next');
 modalNextBtn.setAttribute('class', 'modal-next btn');
 modalNextBtn.innerHTML = 'Next';
-// TODO Previous Button
-// TODO Next Button
+
 
 
 // Assembly
-modalInfoContainer.appendChild(modalImage);
-modalInfoContainer.appendChild(modalH);
-modalInfoContainer.appendChild(modalPEmail);
-modalInfoContainer.appendChild(modalPCity);
-modalInfoContainer.appendChild(modalHR);
-modalInfoContainer.appendChild(modalPPhone);
-modalInfoContainer.appendChild(modalPAddress);
-modalInfoContainer.appendChild(modalPBirthday);
+const modalElements = [modalImage, modalH, modalPEmail, modalPCity, modalHR, modalPPhone, modalPAddress, modalPBirthday];
+for (i = 0; i < modalElements.length; i++) {
+    modalInfoContainer.appendChild(modalElements[i]);
+}
 
 prevNextContainer.appendChild(modalPrevBtn);
 prevNextContainer.appendChild(modalNextBtn);
