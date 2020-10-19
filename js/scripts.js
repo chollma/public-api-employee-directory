@@ -30,7 +30,6 @@ submit.setAttribute('class', 'search-submit');
 // Add button and search box to DOM
 form.appendChild(searchBox);
 form.appendChild(submit);
-
 // Add it to the page
 searchContainer.appendChild(form);
 
@@ -40,7 +39,7 @@ API REQUEST
 
 // Get data from the random user database
 
-fetch('https://randomuser.me/api/?results=12')
+fetch('https://randomuser.me/api/?results=12&nat=us')
     .then(response => response.json())
     .then(data => generateCard(data.results));
 
@@ -57,6 +56,7 @@ function generateCard(data) {
         const card = document.createElement('div');
         card.setAttribute('class', 'card');
         card.setAttribute('id', i);
+
         // Handle the image
         const imageContainer = document.createElement('div');
         imageContainer.setAttribute('class', 'card-img-container');
@@ -87,6 +87,13 @@ function generateCard(data) {
         gallery.appendChild(card);
         card.appendChild(imageContainer);
         card.appendChild(infoContainer);
+
+        // Add event listener for modal open
+        card.addEventListener('click', () => {
+            const id = card.getAttribute('id');
+            const record = data[id];
+            generateModal(record);
+        });
     }
 
 }
@@ -96,83 +103,85 @@ EMPLOYEE INFORMATION MODAL
 ******************************************/
 
 // Create the container to hold the modal object
-const modalContainer = document.createElement('div');
-modalContainer.setAttribute('class', 'modal-container');
-modalContainer.hidden = true;
+function generateModal(record) {
+    const modalContainer = document.createElement('div');
+    modalContainer.setAttribute('class', 'modal-container');
 
+    // Create the modal object
+    const modalObject = document.createElement('div');
+    modalObject.setAttribute('class', 'modal');
+    const closeButton = document.createElement('button');
+    closeButton.setAttribute('type', 'button');
+    closeButton.setAttribute('id', 'modal-close-btn');
+    closeButton.setAttribute('class', 'modal-close-btn');
+    closeButton.innerHTML = '<strong>X</strong>';
 
-// Create the modal object
-const modalObject = document.createElement('div');
-modalObject.setAttribute('class', 'modal');
-const closeButton = document.createElement('button');
-closeButton.setAttribute('type', 'button');
-closeButton.setAttribute('id', 'modal-close-btn');
-closeButton.setAttribute('class', 'modal-close-btn');
-closeButton.innerHTML = '<strong>X</strong>';
+    // Add an event listener for the close modal button
+    closeButton.addEventListener('click', () => {
+        modalContainer.hidden = true;
+    })
 
-// Add an event listener for the close modal button
-closeButton.addEventListener('click', () => {
-    modalContainer.hidden = true;
-})
+    // Create the modal information container
+    const modalInfoContainer = document.createElement('div');
+    modalInfoContainer.setAttribute('class', 'modal-info-container');
 
-// Create the modal information container
-const modalInfoContainer = document.createElement('div');
-modalInfoContainer.setAttribute('class', 'modal-info-container');
+    // Create the modal image container
+    const modalImage = document.createElement('img');
+    modalImage.setAttribute('class', 'modal-img');
+    modalImage.setAttribute('src', record.picture.large);
+    modalImage.setAttribute('alt', 'profile picture');
 
-// Create the modal image container
-const modalImage = document.createElement('img');
-modalImage.setAttribute('class', 'modal-img');
-modalImage.setAttribute('src', 'https://placehold.it/125x125');
-modalImage.setAttribute('alt', 'profile picture');
+    // Fill the container with data
+    const modalH = document.createElement('h3');
+    modalH.setAttribute('id', 'name');
+    modalH.setAttribute('class', 'modal-name cap');
+    modalH.innerHTML = record.name.first + ' ' + record.name.last;
+    const modalPEmail = document.createElement('p');
+    modalPEmail.setAttribute('class', 'modal-text');
+    modalPEmail.innerHTML = record.email;
+    const modalPCity = document.createElement('p');
+    modalPCity.setAttribute('class', 'modal-text cap');
+    modalPCity.innerHTML = record.location.city;
+    const modalHR = document.createElement('hr');
+    const modalPPhone = document.createElement('p');
+    modalPPhone.setAttribute('class', 'modal-text');
+    modalPPhone.innerHTML = record.phone;
+    const modalPAddress = document.createElement('p');
+    modalPAddress.setAttribute('class', 'modal-text');
+    modalPAddress.innerHTML = record.location.street.number + ' ' + record.location.street.name + ' ' + record.location.city + ', ' + record.location.state + ' ' + record.location.postcode;
+    const modalPBirthday = document.createElement('p');
+    modalPBirthday.setAttribute('class', 'modal-text');
 
-// Fill the container with data
-const modalH = document.createElement('h3');
-modalH.setAttribute('id', 'name');
-modalH.setAttribute('class', 'modal-name cap');
-modalH.innerHTML = 'name';
-const modalPEmail = document.createElement('p');
-modalPEmail.setAttribute('class', 'modal-text');
-modalPEmail.innerHTML = 'email';
-const modalPCity = document.createElement('p');
-modalPCity.setAttribute('class', 'modal-text cap');
-modalPCity.innerHTML = 'city';
-const modalHR = document.createElement('hr');
-const modalPPhone = document.createElement('p');
-modalPPhone.setAttribute('class', 'modal-text');
-modalPPhone.innerHTML = '(555) 555-5555';
-const modalPAddress = document.createElement('p');
-modalPAddress.setAttribute('class', 'modal-text');
-modalPAddress.innerHTML = '123 Portland Ave., Portland, OR 97204';
-const modalPBirthday = document.createElement('p');
-modalPBirthday.setAttribute('class', 'modal-text');
-modalPBirthday.innerHTML = 'Birthday: 10/21/2015';
+    const readable = new Date(record.dob.date)
+    modalPBirthday.innerHTML = readable;
 
-// Create an additional div to hold prev/next buttons
-const prevNextContainer = document.createElement('div');
-prevNextContainer.setAttribute('class', 'modal-btn-container');
+    // Create an additional div to hold prev/next buttons
+    const prevNextContainer = document.createElement('div');
+    prevNextContainer.setAttribute('class', 'modal-btn-container');
 
-// Create the previous and next buttons
-const modalPrevBtn = document.createElement('button');
-modalPrevBtn.setAttribute('type', 'button');
-modalPrevBtn.setAttribute('id', 'modal-prev');
-modalPrevBtn.setAttribute('class', 'modal-prev btn');
-modalPrevBtn.innerHTML = 'Prev';
-const modalNextBtn = document.createElement('button');
-modalNextBtn.setAttribute('type', 'button');
-modalNextBtn.setAttribute('id', 'modal-next');
-modalNextBtn.setAttribute('class', 'modal-next btn');
-modalNextBtn.innerHTML = 'Next';
+    // Create the previous and next buttons
+    const modalPrevBtn = document.createElement('button');
+    modalPrevBtn.setAttribute('type', 'button');
+    modalPrevBtn.setAttribute('id', 'modal-prev');
+    modalPrevBtn.setAttribute('class', 'modal-prev btn');
+    modalPrevBtn.innerHTML = 'Prev';
+    const modalNextBtn = document.createElement('button');
+    modalNextBtn.setAttribute('type', 'button');
+    modalNextBtn.setAttribute('id', 'modal-next');
+    modalNextBtn.setAttribute('class', 'modal-next btn');
+    modalNextBtn.innerHTML = 'Next';
 
-// Assemble the modal elements and add it to the page
+    // Assemble the modal elements and add it to the page
 
-const modalElements = [modalImage, modalH, modalPEmail, modalPCity, modalHR, modalPPhone, modalPAddress, modalPBirthday];
-for (i = 0; i < modalElements.length; i++) {
-    modalInfoContainer.appendChild(modalElements[i]);
+    const modalElements = [modalImage, modalH, modalPEmail, modalPCity, modalHR, modalPPhone, modalPAddress, modalPBirthday];
+    for (i = 0; i < modalElements.length; i++) {
+        modalInfoContainer.appendChild(modalElements[i]);
+    }
+    prevNextContainer.appendChild(modalPrevBtn);
+    prevNextContainer.appendChild(modalNextBtn);
+    modalObject.appendChild(modalInfoContainer);
+    modalObject.appendChild(closeButton);
+    modalContainer.appendChild(modalObject);
+    modalContainer.appendChild(prevNextContainer);
+    gallery.after(modalContainer);
 }
-prevNextContainer.appendChild(modalPrevBtn);
-prevNextContainer.appendChild(modalNextBtn);
-modalObject.appendChild(modalInfoContainer);
-modalObject.appendChild(closeButton);
-modalContainer.appendChild(modalObject);
-modalContainer.appendChild(prevNextContainer);
-gallery.after(modalContainer);
