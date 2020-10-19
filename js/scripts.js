@@ -5,7 +5,6 @@ Intended Behavior: Public API Requests
 Goal: Exceeds Expecatations
 ******************************************/
 
-// TODO Error catching for fetch request
 
 /******************************************
 SEARCH
@@ -44,26 +43,24 @@ API REQUEST
 
 fetch('https://randomuser.me/api/?results=12&nat=us')
     .then(response => response.json())
-    .then(data => generateCard(data.results));
+    .then(data => generateCard(data.results))
+    .catch(error => {
+        alert('An error has occured');
+    });
 
 /******************************************
 EMPLOYEE CARDS
 ******************************************/
 
-// Create the HTML card for each object returned    
 function generateCard(data) {
-    // Put cards on the page
     for (i = 0; i < data.length; i++) {
 
-        // Build the card
         const card = document.createElement('div');
         setAttributes(card, {
             "class": "card",
             "id": i
         });
 
-
-        // Handle the image
         const imageContainer = document.createElement('div');
         setAttributes(imageContainer, {
             "class": "card-img-container"
@@ -75,9 +72,9 @@ function generateCard(data) {
             "src": data[i].picture.large,
             "alt": "profile picture"
         });
+
         imageContainer.appendChild(img);
 
-        // Handle the user information
         const infoContainer = document.createElement('div');
         setAttributes(infoContainer, {
             "class": "card-info-container"
@@ -88,33 +85,35 @@ function generateCard(data) {
             "id": "name",
             "class": "card-name cap"
         });
+
         h.innerHTML = data[i].name.first + ' ' + data[i].name.last;
         const cardText = document.createElement('p');
 
         setAttributes(cardText, {
             "class": "card-text"
         });
+
         cardText.innerHTML = data[i].email;
         const cardTextCap = document.createElement('p');
         setAttributes(cardTextCap, {
             "class": "card-text cap"
         });
+
         cardTextCap.innerHTML = data[i].location.city + ', ' + data[i].location.state;
-        // Assemble the information card pieces
+
         infoContainer.appendChild(h);
         infoContainer.appendChild(cardText);
         infoContainer.appendChild(cardTextCap);
+
         const gallery = document.getElementById('gallery');
-        // Add the card to the page
         gallery.appendChild(card);
         card.appendChild(imageContainer);
         card.appendChild(infoContainer);
 
-        // Add event listener for modal open
         card.addEventListener('click', () => {
             const id = card.getAttribute('id');
             const record = data[id];
-            generateModal(record);
+            generateModal(record, id, data);
         });
     }
 
@@ -124,19 +123,18 @@ function generateCard(data) {
 EMPLOYEE INFORMATION MODAL
 ******************************************/
 
-// Create the container to hold the modal object
-function generateModal(record) {
+function generateModal(record, id, data) {
 
     const modalContainer = document.createElement('div');
     setAttributes(modalContainer, {
         "class": "modal-container"
     });
 
-    // Create the modal object
     const modalObject = document.createElement('div');
     setAttributes(modalObject, {
         "class": "modal"
     });
+
     const closeButton = document.createElement('button');
     setAttributes(closeButton, {
         "type": "button",
@@ -146,19 +144,15 @@ function generateModal(record) {
 
     closeButton.innerHTML = '<strong>X</strong>';
 
-    // Add an event listener for the close modal button
     closeButton.addEventListener('click', () => {
         modalContainer.hidden = true;
     })
 
-    // Create the modal information container
     const modalInfoContainer = document.createElement('div');
     setAttributes(modalInfoContainer, {
         "class": "modal-info-container"
     });
-    // modalInfoContainer.setAttribute('class', 'modal-info-container');
 
-    // Create the modal image container
     const modalImage = document.createElement('img');
     setAttributes(modalImage, {
         "class": "modal-img",
@@ -166,8 +160,6 @@ function generateModal(record) {
         "alt": "profile picture"
     });
 
-
-    // Fill the container with data
     const modalH = document.createElement('h3');
     setAttributes(modalH, {
         "id": "name",
@@ -179,22 +171,26 @@ function generateModal(record) {
     setAttributes(modalPEmail, {
         "class": "modal-text"
     });
+
     modalPEmail.innerHTML = record.email;
     const modalPCity = document.createElement('p');
     setAttributes(modalPCity, {
         "class": "modal-text cap"
     });
+
     modalPCity.innerHTML = record.location.city;
     const modalHR = document.createElement('hr');
     const modalPPhone = document.createElement('p');
     setAttributes(modalPPhone, {
         "class": "modal-text"
     });
+
     modalPPhone.innerHTML = record.phone;
     const modalPAddress = document.createElement('p');
     setAttributes(modalPAddress, {
         "class": "modal-text"
     });
+
     modalPAddress.innerHTML = record.location.street.number += ' ' + record.location.street.name + ' ' + record.location.city + ', ' + record.location.state + ' ' + record.location.postcode;
     const modalPBirthday = document.createElement('p');
     setAttributes(modalPBirthday, {
@@ -204,13 +200,11 @@ function generateModal(record) {
     const readable = new Date(record.dob.date)
     modalPBirthday.innerHTML = readable;
 
-    // Create an additional div to hold prev/next buttons
     const prevNextContainer = document.createElement('div');
     setAttributes(prevNextContainer, {
         "class": "modal-btn-container"
     });
 
-    // Create the previous and next buttons
     const modalPrevBtn = document.createElement('button');
 
     setAttributes(modalPrevBtn, {
@@ -219,6 +213,11 @@ function generateModal(record) {
         "class": "modal-next btn",
     });
     modalPrevBtn.innerHTML = 'Prev';
+    modalPrevBtn.addEventListener('click', () => {
+        console.log('prev');
+
+        // TODO Generate New Modal
+    });
 
     const modalNextBtn = document.createElement('button');
     setAttributes(modalNextBtn, {
@@ -229,7 +228,12 @@ function generateModal(record) {
 
     modalNextBtn.innerHTML = 'Next';
 
-    // Assemble the modal elements and add it to the page
+    modalNextBtn.addEventListener('click', () => {
+        console.log('next');
+
+        // TODO Generate New Modal
+    });
+
     const modalElements = [
         modalImage,
         modalH,
