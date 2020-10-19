@@ -104,6 +104,7 @@ EMPLOYEE INFORMATION MODAL
 
 // Create the container to hold the modal object
 function generateModal(record) {
+
     const modalContainer = document.createElement('div');
     modalContainer.setAttribute('class', 'modal-container');
 
