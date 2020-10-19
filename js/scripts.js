@@ -12,21 +12,30 @@ SEARCH
 // Create form
 const searchContainer = document.querySelector('.search-container');
 const form = document.createElement('form');
-form.setAttribute('action', '#');
-form.setAttribute('method', 'get');
+
+setAttributes(form, {
+    "action": "#",
+    "method": "get"
+});
 
 // Add search box
 const searchBox = document.createElement('input');
-searchBox.setAttribute('type', 'search');
-searchBox.setAttribute('id', 'search-input');
-searchBox.setAttribute('class', 'search-input');
-searchBox.setAttribute('placeholder', 'Search...');
+setAttributes(searchBox, {
+    "type": "search",
+    "id": "search-input",
+    "class": "search-input",
+    "placeholder": "Search..."
+});
+
 // Add go button
 const submit = document.createElement('input');
-submit.setAttribute('type', 'submit');
-submit.setAttribute('value', 'Go');
-submit.setAttribute('id', 'search-submit');
-submit.setAttribute('class', 'search-submit');
+setAttributes(submit, {
+    "type": "submit",
+    "value": "Go",
+    "id": "search-submit",
+    "class": "search-submit"
+});
+
 // Add button and search box to DOM
 form.appendChild(searchBox);
 form.appendChild(submit);
@@ -54,16 +63,21 @@ function generateCard(data) {
 
         // Build the card
         const card = document.createElement('div');
-        card.setAttribute('class', 'card');
-        card.setAttribute('id', i);
+        setAttributes(card, {
+            "class": "card",
+            "id": i
+        });
+
 
         // Handle the image
         const imageContainer = document.createElement('div');
         imageContainer.setAttribute('class', 'card-img-container');
         const img = document.createElement('img');
+
         img.setAttribute('class', 'card-img');
         img.setAttribute('src', data[i].picture.large);
         img.setAttribute('alt', 'profile picture');
+
         imageContainer.appendChild(img);
         // Handle the user information
         const infoContainer = document.createElement('div');
@@ -149,7 +163,7 @@ function generateModal(record) {
     modalPPhone.innerHTML = record.phone;
     const modalPAddress = document.createElement('p');
     modalPAddress.setAttribute('class', 'modal-text');
-    modalPAddress.innerHTML = record.location.street.number + ' ' + record.location.street.name + ' ' + record.location.city + ', ' + record.location.state + ' ' + record.location.postcode;
+    modalPAddress.innerHTML = record.location.street.number += ' ' + record.location.street.name + ' ' + record.location.city + ', ' + record.location.state + ' ' + record.location.postcode;
     const modalPBirthday = document.createElement('p');
     modalPBirthday.setAttribute('class', 'modal-text');
 
@@ -162,22 +176,39 @@ function generateModal(record) {
 
     // Create the previous and next buttons
     const modalPrevBtn = document.createElement('button');
-    modalPrevBtn.setAttribute('type', 'button');
-    modalPrevBtn.setAttribute('id', 'modal-prev');
-    modalPrevBtn.setAttribute('class', 'modal-prev btn');
+
+    setAttributes(modalPrevBtn, {
+        "type": "button",
+        "id": "modal-next",
+        "class": "modal-next btn",
+    });
     modalPrevBtn.innerHTML = 'Prev';
+
     const modalNextBtn = document.createElement('button');
-    modalNextBtn.setAttribute('type', 'button');
-    modalNextBtn.setAttribute('id', 'modal-next');
-    modalNextBtn.setAttribute('class', 'modal-next btn');
+    setAttributes(modalNextBtn, {
+        "type": "button",
+        "id": "modal-next",
+        "class": "modal-next btn"
+    });
+
     modalNextBtn.innerHTML = 'Next';
 
     // Assemble the modal elements and add it to the page
+    const modalElements = [
+        modalImage,
+        modalH,
+        modalPEmail,
+        modalPCity,
+        modalHR,
+        modalPPhone,
+        modalPAddress,
+        modalPBirthday
+    ];
 
-    const modalElements = [modalImage, modalH, modalPEmail, modalPCity, modalHR, modalPPhone, modalPAddress, modalPBirthday];
     for (i = 0; i < modalElements.length; i++) {
         modalInfoContainer.appendChild(modalElements[i]);
     }
+
     prevNextContainer.appendChild(modalPrevBtn);
     prevNextContainer.appendChild(modalNextBtn);
     modalObject.appendChild(modalInfoContainer);
@@ -185,4 +216,13 @@ function generateModal(record) {
     modalContainer.appendChild(modalObject);
     modalContainer.appendChild(prevNextContainer);
     gallery.after(modalContainer);
+}
+
+/******************************************
+HELPER FUNCTIONS
+******************************************/
+function setAttributes(element, attributes) {
+    for (const key in attributes) {
+        element.setAttribute(key, attributes[key]);
+    }
 }
