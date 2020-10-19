@@ -5,6 +5,8 @@ Intended Behavior: Public API Requests
 Goal: Exceeds Expecatations
 ******************************************/
 
+// TODO Error catching for fetch request
+
 /******************************************
 SEARCH
 ******************************************/
@@ -63,26 +65,40 @@ function generateCard(data) {
 
         // Handle the image
         const imageContainer = document.createElement('div');
-        imageContainer.setAttribute('class', 'card-img-container');
+        setAttributes(imageContainer, {
+            "class": "card-img-container"
+        });
+
         const img = document.createElement('img');
-
-        img.setAttribute('class', 'card-img');
-        img.setAttribute('src', data[i].picture.large);
-        img.setAttribute('alt', 'profile picture');
-
+        setAttributes(img, {
+            "class": "card-img",
+            "src": data[i].picture.large,
+            "alt": "profile picture"
+        });
         imageContainer.appendChild(img);
+
         // Handle the user information
         const infoContainer = document.createElement('div');
-        infoContainer.setAttribute('class', 'card-info-container');
+        setAttributes(infoContainer, {
+            "class": "card-info-container"
+        });
+
         const h = document.createElement('h3');
-        h.setAttribute('id', 'name');
-        h.setAttribute('class', 'card-name cap');
+        setAttributes(h, {
+            "id": "name",
+            "class": "card-name cap"
+        });
         h.innerHTML = data[i].name.first + ' ' + data[i].name.last;
         const cardText = document.createElement('p');
-        cardText.setAttribute('class', 'card-text');
+
+        setAttributes(cardText, {
+            "class": "card-text"
+        });
         cardText.innerHTML = data[i].email;
         const cardTextCap = document.createElement('p');
-        cardTextCap.setAttribute('class', 'card-text cap');
+        setAttributes(cardTextCap, {
+            "class": "card-text cap"
+        });
         cardTextCap.innerHTML = data[i].location.city + ', ' + data[i].location.state;
         // Assemble the information card pieces
         infoContainer.appendChild(h);
@@ -112,15 +128,22 @@ EMPLOYEE INFORMATION MODAL
 function generateModal(record) {
 
     const modalContainer = document.createElement('div');
-    modalContainer.setAttribute('class', 'modal-container');
+    setAttributes(modalContainer, {
+        "class": "modal-container"
+    });
 
     // Create the modal object
     const modalObject = document.createElement('div');
-    modalObject.setAttribute('class', 'modal');
+    setAttributes(modalObject, {
+        "class": "modal"
+    });
     const closeButton = document.createElement('button');
-    closeButton.setAttribute('type', 'button');
-    closeButton.setAttribute('id', 'modal-close-btn');
-    closeButton.setAttribute('class', 'modal-close-btn');
+    setAttributes(closeButton, {
+        "type": "button",
+        "id": "modal-close-btn",
+        "class": "modal-close-btn"
+    });
+
     closeButton.innerHTML = '<strong>X</strong>';
 
     // Add an event listener for the close modal button
@@ -130,41 +153,62 @@ function generateModal(record) {
 
     // Create the modal information container
     const modalInfoContainer = document.createElement('div');
-    modalInfoContainer.setAttribute('class', 'modal-info-container');
+    setAttributes(modalInfoContainer, {
+        "class": "modal-info-container"
+    });
+    // modalInfoContainer.setAttribute('class', 'modal-info-container');
 
     // Create the modal image container
     const modalImage = document.createElement('img');
-    modalImage.setAttribute('class', 'modal-img');
-    modalImage.setAttribute('src', record.picture.large);
-    modalImage.setAttribute('alt', 'profile picture');
+    setAttributes(modalImage, {
+        "class": "modal-img",
+        "src": record.picture.large,
+        "alt": "profile picture"
+    });
+
 
     // Fill the container with data
     const modalH = document.createElement('h3');
-    modalH.setAttribute('id', 'name');
-    modalH.setAttribute('class', 'modal-name cap');
+    setAttributes(modalH, {
+        "id": "name",
+        "class": "modal-name cap"
+    });
+
     modalH.innerHTML = record.name.first + ' ' + record.name.last;
     const modalPEmail = document.createElement('p');
-    modalPEmail.setAttribute('class', 'modal-text');
+    setAttributes(modalPEmail, {
+        "class": "modal-text"
+    });
     modalPEmail.innerHTML = record.email;
     const modalPCity = document.createElement('p');
-    modalPCity.setAttribute('class', 'modal-text cap');
+    setAttributes(modalPCity, {
+        "class": "modal-text cap"
+    });
     modalPCity.innerHTML = record.location.city;
     const modalHR = document.createElement('hr');
     const modalPPhone = document.createElement('p');
-    modalPPhone.setAttribute('class', 'modal-text');
+    setAttributes(modalPPhone, {
+        "class": "modal-text"
+    });
     modalPPhone.innerHTML = record.phone;
     const modalPAddress = document.createElement('p');
-    modalPAddress.setAttribute('class', 'modal-text');
+    setAttributes(modalPAddress, {
+        "class": "modal-text"
+    });
     modalPAddress.innerHTML = record.location.street.number += ' ' + record.location.street.name + ' ' + record.location.city + ', ' + record.location.state + ' ' + record.location.postcode;
     const modalPBirthday = document.createElement('p');
-    modalPBirthday.setAttribute('class', 'modal-text');
+    setAttributes(modalPBirthday, {
+        "class": "modal-text"
+    });
 
     const readable = new Date(record.dob.date)
     modalPBirthday.innerHTML = readable;
 
     // Create an additional div to hold prev/next buttons
     const prevNextContainer = document.createElement('div');
-    prevNextContainer.setAttribute('class', 'modal-btn-container');
+    setAttributes(prevNextContainer, {
+        "class": "modal-btn-container"
+    });
 
     // Create the previous and next buttons
     const modalPrevBtn = document.createElement('button');
