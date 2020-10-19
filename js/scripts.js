@@ -8,8 +8,6 @@ Goal: Exceeds Expecatations
 /******************************************
 SEARCH
 ******************************************/
-
-// Create form
 const searchContainer = document.querySelector('.search-container');
 const form = document.createElement('form');
 
@@ -18,7 +16,6 @@ setAttributes(form, {
     "method": "get"
 });
 
-// Add search box
 const searchBox = document.createElement('input');
 setAttributes(searchBox, {
     "type": "search",
@@ -27,7 +24,6 @@ setAttributes(searchBox, {
     "placeholder": "Search..."
 });
 
-// Add go button
 const submit = document.createElement('input');
 setAttributes(submit, {
     "type": "submit",
@@ -36,17 +32,13 @@ setAttributes(submit, {
     "class": "search-submit"
 });
 
-// Add button and search box to DOM
 form.appendChild(searchBox);
 form.appendChild(submit);
-// Add it to the page
 searchContainer.appendChild(form);
 
 /******************************************
 API REQUEST
 ******************************************/
-
-// Get data from the random user database
 
 fetch('https://randomuser.me/api/?results=12&nat=us')
     .then(response => response.json())
