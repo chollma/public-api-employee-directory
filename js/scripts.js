@@ -113,18 +113,42 @@ function generateCard(data) {
 
         card.addEventListener('click', () => {
             const id = card.getAttribute('id');
-            const record = data[id];
-            generateModal(record, id, data);
+            pushData(data, id);
+            modalContainer.hidden = false;
+
+            // TODO overwrite the HTML with the clicked record's data (need to pass in the data and the current id)
+            // TODO make modal hidden = false
+          
         });
     }
 
 }
 
+function pushData (data, id) {
+    modalImage.setAttribute('src',data[id].picture.large);
+    modalH.innerHTML = data[id].name.first + ' ' + data[id].name.last;
+    modalPEmail.innerHTML = data[id].email;
+    modalPCity.innerHTML = data[id].location.city;
+    const dirty = data[id].phone;
+    const clean = dirty.replace(/-/, ' ');
+    modalPPhone.innerHTML = clean;
+    modalPAddress.innerHTML = data[id].location.street.number + ' ' + data[id].location.street.name + '<br>' + data[id].location.city + ', ' + data[id].location.state;
+    const birthday = new Date(data[id].dob.date);
+    const cleanBirthday = birthday.toLocaleDateString('en-us', {
+        day: '2-digit',
+        month: '2-digit',
+        year: 'numeric'
+    });
+    modalPBirthday.innerHTML = 'Birthday: ' + cleanBirthday;
+}
+
+// bug - every time I click I add a new modal to the HTML. Need to only add one modal and swap out the data. This will enable the prev/next to work.
+
 /******************************************
 EMPLOYEE INFORMATION MODAL
 ******************************************/
 
-function generateModal(record, id, data) {
+
 
     const modalContainer = document.createElement('div');
     setAttributes(modalContainer, {
@@ -157,7 +181,7 @@ function generateModal(record, id, data) {
     const modalImage = document.createElement('img');
     setAttributes(modalImage, {
         "class": "modal-img",
-        "src": record.picture.large,
+        "src": "",
         "alt": "profile picture"
     });
 
@@ -167,46 +191,37 @@ function generateModal(record, id, data) {
         "class": "modal-name cap"
     });
 
-    modalH.innerHTML = record.name.first + ' ' + record.name.last;
+    modalH.innerHTML = "";
     const modalPEmail = document.createElement('p');
     setAttributes(modalPEmail, {
         "class": "modal-text"
     });
 
-    modalPEmail.innerHTML = record.email;
+    modalPEmail.innerHTML = "";
     const modalPCity = document.createElement('p');
     setAttributes(modalPCity, {
         "class": "modal-text cap"
     });
 
-    modalPCity.innerHTML = record.location.city;
+    modalPCity.innerHTML = "";
     const modalHR = document.createElement('hr');
     const modalPPhone = document.createElement('p');
     setAttributes(modalPPhone, {
         "class": "modal-text"
     });
 
-    const dirty = record.phone;
-    const clean = dirty.replace(/-/, ' ');
-    modalPPhone.innerHTML = clean;
+   
     const modalPAddress = document.createElement('p');
     setAttributes(modalPAddress, {
         "class": "modal-text"
     });
 
-    modalPAddress.innerHTML = record.location.street.number += ' ' + record.location.street.name + ' ' + record.location.city + ', ' + record.location.state + ' ' + record.location.postcode;
+    modalPAddress.innerHTML = "";
     const modalPBirthday = document.createElement('p');
     setAttributes(modalPBirthday, {
         "class": "modal-text"
     });
-    const birthday = new Date(record.dob.date);
-    const cleanBirthday = birthday.toLocaleDateString('en-us', {
-        day: '2-digit',
-        month: '2-digit',
-        year: 'numeric'
-    });
-    modalPBirthday.innerHTML = 'Birthday: ' + cleanBirthday;
-
+    
     const prevNextContainer = document.createElement('div');
     setAttributes(prevNextContainer, {
         "class": "modal-btn-container"
@@ -237,6 +252,7 @@ function generateModal(record, id, data) {
 
     modalNextBtn.addEventListener('click', () => {
         console.log('next');
+        
 
         // TODO Generate New Modal
     });
@@ -263,7 +279,9 @@ function generateModal(record, id, data) {
     modalContainer.appendChild(modalObject);
     modalContainer.appendChild(prevNextContainer);
     gallery.after(modalContainer);
-}
+
+    modalContainer.hidden = true;
+
 
 /******************************************
 HELPER FUNCTIONS
