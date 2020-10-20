@@ -41,11 +41,12 @@ searchContainer.appendChild(form);
 API REQUEST
 ******************************************/
 
-fetch('https://randomuser.me/api/?results=12&nat=us')
+fetch('https://randomuser.me/api/?results=12&nat=us&noinfo')
     .then(response => response.json())
     .then(data => generateCard(data.results))
     .catch(error => {
-        alert('An error has occured');
+        const header = document.querySelector('header');
+        header.insertAdjacentHTML('afterend', '<p>An error has occurred</p>');
     });
 
 /******************************************
@@ -185,7 +186,9 @@ function generateModal(record, id, data) {
         "class": "modal-text"
     });
 
-    modalPPhone.innerHTML = record.phone;
+    const dirty = record.phone;
+    const clean = dirty.replace(/-/, ' ');
+    modalPPhone.innerHTML = clean;
     const modalPAddress = document.createElement('p');
     setAttributes(modalPAddress, {
         "class": "modal-text"
@@ -196,9 +199,13 @@ function generateModal(record, id, data) {
     setAttributes(modalPBirthday, {
         "class": "modal-text"
     });
-
-    const readable = new Date(record.dob.date)
-    modalPBirthday.innerHTML = readable;
+    const birthday = new Date(record.dob.date);
+    const cleanBirthday = birthday.toLocaleDateString('en-us', {
+        day: '2-digit',
+        month: '2-digit',
+        year: 'numeric'
+    });
+    modalPBirthday.innerHTML = 'Birthday: ' + cleanBirthday;
 
     const prevNextContainer = document.createElement('div');
     setAttributes(prevNextContainer, {
