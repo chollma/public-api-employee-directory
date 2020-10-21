@@ -121,7 +121,6 @@ function generateCard(data) {
           
         });
     }
-
 }
 
 function pushData (data, id) {
@@ -140,6 +139,20 @@ function pushData (data, id) {
         year: 'numeric'
     });
     modalPBirthday.innerHTML = 'Birthday: ' + cleanBirthday;
+
+    modalPrevBtn.addEventListener('click', () => {
+     id--;
+        pushData(data,id);
+    });
+
+    modalNextBtn.addEventListener('click', () => {
+            
+            id++;
+            pushData(data,id);
+            
+    
+    });
+
 }
 
 // bug - every time I click I add a new modal to the HTML. Need to only add one modal and swap out the data. This will enable the prev/next to work.
@@ -235,12 +248,7 @@ EMPLOYEE INFORMATION MODAL
         "class": "modal-next btn",
     });
     modalPrevBtn.innerHTML = 'Prev';
-    modalPrevBtn.addEventListener('click', () => {
-        console.log('prev');
-
-        // TODO Generate New Modal
-    });
-
+    
     const modalNextBtn = document.createElement('button');
     setAttributes(modalNextBtn, {
         "type": "button",
@@ -250,12 +258,7 @@ EMPLOYEE INFORMATION MODAL
 
     modalNextBtn.innerHTML = 'Next';
 
-    modalNextBtn.addEventListener('click', () => {
-        console.log('next');
-        
-
-        // TODO Generate New Modal
-    });
+   
 
     const modalElements = [
         modalImage,
