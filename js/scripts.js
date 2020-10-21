@@ -7,9 +7,9 @@ Goal: Exceeds Expecatations
 
 
 /******************************************
-SEARCH
+CREATE SEARCH BOX
 ******************************************/
-const searchContainer = document.querySelector('.search-container');
+const searchDiv = document.querySelector('.search-container');
 const form = document.createElement('form');
 
 setAttributes(form, {
@@ -25,8 +25,8 @@ setAttributes(searchBox, {
     "placeholder": "Search..."
 });
 
-const submit = document.createElement('input');
-setAttributes(submit, {
+const searchSubmit = document.createElement('input');
+setAttributes(searchSubmit, {
     "type": "submit",
     "value": "Go",
     "id": "search-submit",
@@ -34,11 +34,11 @@ setAttributes(submit, {
 });
 
 form.appendChild(searchBox);
-form.appendChild(submit);
-searchContainer.appendChild(form);
+form.appendChild(searchSubmit);
+searchDiv.appendChild(form);
 
 /******************************************
-API REQUEST
+MAKE API REQUEST
 ******************************************/
 
 fetch('https://randomuser.me/api/?results=12&nat=us&noinfo')
@@ -50,7 +50,7 @@ fetch('https://randomuser.me/api/?results=12&nat=us&noinfo')
     });
 
 /******************************************
-EMPLOYEE CARDS
+CREATE EMPLOYEE CARDS
 ******************************************/
 
 function generateCard(data) {
@@ -62,128 +62,83 @@ function generateCard(data) {
             "id": i
         });
 
-        const imageContainer = document.createElement('div');
-        setAttributes(imageContainer, {
+        const cardImgDiv = document.createElement('div');
+        setAttributes(cardImgDiv, {
             "class": "card-img-container"
         });
 
-        const img = document.createElement('img');
-        setAttributes(img, {
+        const cardImg = document.createElement('img');
+        setAttributes(cardImg, {
             "class": "card-img",
             "src": data[i].picture.large,
             "alt": "profile picture"
         });
+        cardImgDiv.appendChild(cardImg);
 
-        imageContainer.appendChild(img);
-
-        const infoContainer = document.createElement('div');
-        setAttributes(infoContainer, {
+        const cardInfoContainer = document.createElement('div');
+        setAttributes(cardInfoContainer, {
             "class": "card-info-container"
         });
 
-        const h = document.createElement('h3');
-        setAttributes(h, {
+        const cardHeader = document.createElement('h3');
+        setAttributes(cardHeader, {
             "id": "name",
             "class": "card-name cap"
         });
-
-        h.innerHTML = data[i].name.first + ' ' + data[i].name.last;
-        const cardText = document.createElement('p');
-
-        setAttributes(cardText, {
+        cardHeader.insertAdjacentHTML('beforeend', data[i].name.first + ' ' + data[i].name.last);
+        
+        const cardFirst = document.createElement('p');
+        setAttributes(cardFirst, {
             "class": "card-text"
         });
+        cardFirst.insertAdjacentHTML('beforeend', data[i].email);
 
-        cardText.innerHTML = data[i].email;
-        const cardTextCap = document.createElement('p');
-        setAttributes(cardTextCap, {
+        const cardSecond = document.createElement('p');
+        setAttributes(cardSecond, {
             "class": "card-text cap"
         });
+        cardSecond.insertAdjacentHTML('beforeend', data[i].location.city + ', ' + data[i].location.state);
 
-        cardTextCap.innerHTML = data[i].location.city + ', ' + data[i].location.state;
-
-        infoContainer.appendChild(h);
-        infoContainer.appendChild(cardText);
-        infoContainer.appendChild(cardTextCap);
+        cardInfoContainer.appendChild(cardHeader);
+        cardInfoContainer.appendChild(cardFirst);
+        cardInfoContainer.appendChild(cardSecond);
 
         const gallery = document.getElementById('gallery');
         gallery.appendChild(card);
-        card.appendChild(imageContainer);
-        card.appendChild(infoContainer);
+        card.appendChild(cardImgDiv);
+        card.appendChild(cardInfoContainer);
 
         card.addEventListener('click', () => {
             const id = card.getAttribute('id');
             pushData(data, id);
-            modalContainer.hidden = false;
-
-            // TODO overwrite the HTML with the clicked record's data (need to pass in the data and the current id)
-            // TODO make modal hidden = false
-          
+            modalDiv.hidden = false;
         });
     }
 }
 
-function pushData (data, id) {
-    modalImage.setAttribute('src',data[id].picture.large);
-    modalH.innerHTML = data[id].name.first + ' ' + data[id].name.last;
-    modalPEmail.innerHTML = data[id].email;
-    modalPCity.innerHTML = data[id].location.city;
-    const dirty = data[id].phone;
-    const clean = dirty.replace(/-/, ' ');
-    modalPPhone.innerHTML = clean;
-    modalPAddress.innerHTML = data[id].location.street.number + ' ' + data[id].location.street.name + '<br>' + data[id].location.city + ', ' + data[id].location.state;
-    const birthday = new Date(data[id].dob.date);
-    const cleanBirthday = birthday.toLocaleDateString('en-us', {
-        day: '2-digit',
-        month: '2-digit',
-        year: 'numeric'
-    });
-    modalPBirthday.innerHTML = 'Birthday: ' + cleanBirthday;
-
-    modalPrevBtn.addEventListener('click', () => {
-     id--;
-        pushData(data,id);
-    });
-
-    modalNextBtn.addEventListener('click', () => {
-            
-            id++;
-            pushData(data,id);
-            
-    
-    });
-
-}
-
-// bug - every time I click I add a new modal to the HTML. Need to only add one modal and swap out the data. This will enable the prev/next to work.
 
 /******************************************
-EMPLOYEE INFORMATION MODAL
+CREATE EMPLOYEE MODAL
 ******************************************/
-
-
-
-    const modalContainer = document.createElement('div');
-    setAttributes(modalContainer, {
+    const modalDiv = document.createElement('div');
+    setAttributes(modalDiv, {
         "class": "modal-container"
     });
 
-    const modalObject = document.createElement('div');
-    setAttributes(modalObject, {
+    const modal = document.createElement('div');
+    setAttributes(modal, {
         "class": "modal"
     });
 
-    const closeButton = document.createElement('button');
-    setAttributes(closeButton, {
+    const modalClose = document.createElement('button');
+    setAttributes(modalClose, {
         "type": "button",
         "id": "modal-close-btn",
         "class": "modal-close-btn"
     });
-
-    closeButton.innerHTML = '<strong>X</strong>';
-
-    closeButton.addEventListener('click', () => {
-        modalContainer.hidden = true;
+    modalClose.insertAdjacentHTML('beforeend','<strong>X</strong>');
+    modalClose.addEventListener('click', () => {
+    modalDiv.hidden = true;
     })
 
     const modalInfoContainer = document.createElement('div');
@@ -191,47 +146,42 @@ EMPLOYEE INFORMATION MODAL
         "class": "modal-info-container"
     });
 
-    const modalImage = document.createElement('img');
-    setAttributes(modalImage, {
+    const modalImg = document.createElement('img');
+    setAttributes(modalImg, {
         "class": "modal-img",
-        "src": "",
         "alt": "profile picture"
     });
 
-    const modalH = document.createElement('h3');
-    setAttributes(modalH, {
+    const modalHeader = document.createElement('h3');
+    setAttributes(modalHeader, {
         "id": "name",
         "class": "modal-name cap"
     });
 
-    modalH.innerHTML = "";
-    const modalPEmail = document.createElement('p');
-    setAttributes(modalPEmail, {
+    const modalEmail = document.createElement('p');
+    setAttributes(modalEmail, {
         "class": "modal-text"
     });
 
-    modalPEmail.innerHTML = "";
-    const modalPCity = document.createElement('p');
-    setAttributes(modalPCity, {
+    const modalCity = document.createElement('p');
+    setAttributes(modalCity, {
         "class": "modal-text cap"
     });
-
-    modalPCity.innerHTML = "";
     const modalHR = document.createElement('hr');
-    const modalPPhone = document.createElement('p');
-    setAttributes(modalPPhone, {
+    const modalPhone = document.createElement('p');
+    setAttributes(modalPhone, {
         "class": "modal-text"
     });
 
    
-    const modalPAddress = document.createElement('p');
-    setAttributes(modalPAddress, {
+    const modalAddress = document.createElement('p');
+    setAttributes(modalAddress, {
         "class": "modal-text"
     });
 
-    modalPAddress.innerHTML = "";
-    const modalPBirthday = document.createElement('p');
-    setAttributes(modalPBirthday, {
+    
+    const modalBirthday = document.createElement('p');
+    setAttributes(modalBirthday, {
         "class": "modal-text"
     });
     
@@ -241,13 +191,12 @@ EMPLOYEE INFORMATION MODAL
     });
 
     const modalPrevBtn = document.createElement('button');
-
     setAttributes(modalPrevBtn, {
         "type": "button",
         "id": "modal-next",
         "class": "modal-next btn",
     });
-    modalPrevBtn.innerHTML = 'Prev';
+    modalPrevBtn.insertAdjacentHTML('beforeend', 'Prev');
     
     const modalNextBtn = document.createElement('button');
     setAttributes(modalNextBtn, {
@@ -255,20 +204,16 @@ EMPLOYEE INFORMATION MODAL
         "id": "modal-next",
         "class": "modal-next btn"
     });
-
-    modalNextBtn.innerHTML = 'Next';
-
-   
-
+    modalNextBtn.insertAdjacentHTML('beforeend', 'Next');
     const modalElements = [
-        modalImage,
-        modalH,
-        modalPEmail,
-        modalPCity,
+        modalImg,
+        modalHeader,
+        modalEmail,
+        modalCity,
         modalHR,
-        modalPPhone,
-        modalPAddress,
-        modalPBirthday
+        modalPhone,
+        modalAddress,
+        modalBirthday
     ];
 
     for (i = 0; i < modalElements.length; i++) {
@@ -277,14 +222,53 @@ EMPLOYEE INFORMATION MODAL
 
     prevNextContainer.appendChild(modalPrevBtn);
     prevNextContainer.appendChild(modalNextBtn);
-    modalObject.appendChild(modalInfoContainer);
-    modalObject.appendChild(closeButton);
-    modalContainer.appendChild(modalObject);
-    modalContainer.appendChild(prevNextContainer);
-    gallery.after(modalContainer);
+    modal.appendChild(modalInfoContainer);
+    modal.appendChild(modalClose);
+    modalDiv.appendChild(modal);
+    modalDiv.appendChild(prevNextContainer);
+    gallery.after(modalDiv);
 
-    modalContainer.hidden = true;
+    modalDiv.hidden = true;
 
+/******************************************
+SWAP MODAL DATA
+******************************************/
+
+    function pushData (data, id) {
+        modalImg.setAttribute('src',data[id].picture.large);
+        modalHeader.innerHTML = data[id].name.first + ' ' + data[id].name.last;
+        modalEmail.innerHTML = data[id].email;
+        modalCity.innerHTML = data[id].location.city;
+        
+        const dirty = data[id].phone;
+        const clean = dirty.replace(/-/, ' ');
+        modalPhone.innerHTML = clean;
+        
+        modalAddress.innerHTML = data[id].location.street.number + ' ' + data[id].location.street.name + '<br>' + data[id].location.city + ', ' + data[id].location.state;
+       
+        const birthday = new Date(data[id].dob.date);
+        const cleanBirthday = birthday.toLocaleDateString('en-us', {
+            day: '2-digit',
+            month: '2-digit',
+            year: 'numeric'
+        });
+        modalBirthday.innerHTML = 'Birthday: ' + cleanBirthday;
+    
+        modalPrevBtn.addEventListener('click', () => {
+            if (id>0){
+             id--;
+             pushData(data,id);
+          }
+        });
+    
+        modalNextBtn.addEventListener('click', () => {
+            if (id<11){
+                id++;
+                pushData(data,id);
+        }
+        });
+    
+    }
 
 /******************************************
 HELPER FUNCTIONS
@@ -294,3 +278,4 @@ function setAttributes(element, attributes) {
         element.setAttribute(key, attributes[key]);
     }
 }
+
