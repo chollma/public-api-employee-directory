@@ -14,7 +14,7 @@ const form = document.createElement("form");
 setAttributes(form, {
   action: "#",
   method: "get",
-  onsubmit:"search()"
+  onsubmit:"search(searchBox.value)"
 });
 
 const searchBox = document.createElement("input");
@@ -52,7 +52,6 @@ fetch("https://randomuser.me/api/?results=12&nat=us&noinfo")
     header.insertAdjacentHTML("afterend", "<p>An error has occurred</p>");
   });
 
-  
 /******************************************
 CREATE EMPLOYEE CARDS - Iterate through fetch response object and build HTML
 ******************************************/
@@ -281,6 +280,21 @@ function pushData(data, id) {
     }
   });
 }
+
+/******************************************
+SWAP CARDS - When search form is submitted hide/show cards based on input
+******************************************/
+async function search(query){
+console.log(query); // search box input
+
+// grab all the cards
+// extract their the names and push into a new array
+// compare input to the new array
+// assuming order doesn't change the index in this array should equal the id on the element to hide/show
+
+
+}
+
 
 /******************************************
 HELPER FUNCTIONS
