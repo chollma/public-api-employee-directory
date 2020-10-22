@@ -12,9 +12,9 @@ const searchDiv = document.querySelector(".search-container");
 const form = document.createElement("form");
 
 setAttributes(form, {
-  action: "#",
+  action: "",
   method: "get",
-  onsubmit:"search(searchBox.value)"
+  onsubmit:"search(searchBox)"
 });
 
 const searchBox = document.createElement("input");
@@ -45,8 +45,8 @@ MAKE API REQUEST - Request 12 records from the US
 ******************************************/
 
 fetch("https://randomuser.me/api/?results=12&nat=us&noinfo")
-  .then((response) => response.json())
-  .then((data) => generateCard(data.results))
+  .then(response => response.json())
+  .then(data => generateCard(data.results))
   .catch((error) => {
     const header = document.querySelector("header");
     header.insertAdjacentHTML("afterend", "<p>An error has occurred</p>");
@@ -284,15 +284,21 @@ function pushData(data, id) {
 /******************************************
 SWAP CARDS - When search form is submitted hide/show cards based on input
 ******************************************/
-function search(query){
-console.log(query); // search box input
+function search(query) {
+  const names = gallery.querySelectorAll("#name");
+  for (i = 0; i < names.length; i++) {
+    names[i].classList.remove("match");
 
-// grab all the cards
-// extract their the names and push into a new array
-// compare input to the new array
-// assuming order doesn't change the index in this array should equal the id on the element to hide/show
+    if (
+      query.value.length != 0 &&
+      names[i].textContent.toLowerCase().includes(query.value.toLowerCase())
+    ) {
+      names[i].classList.add("match");
+    }
+    
+  }
 
-
+  console.log(query); // search box input
 }
 
 
