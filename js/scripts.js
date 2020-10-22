@@ -284,7 +284,7 @@ function pushData(data, id) {
 /******************************************
 SWAP CARDS - When search form is submitted hide/show cards based on input
 ******************************************/
-async function search(query){
+function search(query){
 console.log(query); // search box input
 
 // grab all the cards

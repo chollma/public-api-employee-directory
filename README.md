@@ -9,7 +9,11 @@ A click action from a user on a calls the **pushData** function and sets the mod
 The **pushData** function has one more surprise. It adds an event listener to both the previous and next buttons that are displayed on screen for the user, with a conditional statement that prevents a user from going beyond the contraints of the data.
 
 The last thing that was added was search functionality. This allows a user to search by name. On form submit (clicking Go), the **search** function is run so that we can compare the form input to the data that's displayed on the page. This doesn't require a new request to the API but rather looks at the existing data we have available.
-  
+
+## CSS Tweaks
+- Changed background color for the body from rgba(235, 235, 235, 0.9) to rgba(47, 79, 79, 1.0)
+- Changed the header h1 color from rgba(50, 50, 50, 0.9) to rgba(245, 245, 245, 0.9)
+
 ## Running the Project
 To see the project in action, clone this repository to your desktop and open index.html in a browser.
 
@@ -20,5 +24,6 @@ To see the project in action, clone this repository to your desktop and open ind
 [GitHub](https://github.com/chollma) 
 [Twitter](https://twitter.com/cooperhollmaier) 
 [Website](https://cooperhollmaier.com)
+
 
 
