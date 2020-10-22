@@ -288,12 +288,16 @@ function search(query) {
   const names = gallery.querySelectorAll("#name");
   for (i = 0; i < names.length; i++) {
     names[i].classList.remove("match");
-
     if (
       query.value.length != 0 &&
       names[i].textContent.toLowerCase().includes(query.value.toLowerCase())
     ) {
       names[i].classList.add("match");
+    }
+  }
+  for (i = 0; i<names.length; i++){
+    if (!(names[i].classList.contains('match'))){
+      names[i].parentElement.parentElement.style.display  = 'none';
     }
     
   }
