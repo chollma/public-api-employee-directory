@@ -12,9 +12,9 @@ const searchDiv = document.querySelector(".search-container");
 const form = document.createElement("form");
 
 setAttributes(form, {
-  action: "",
+  action: "#",
   method: "get",
-  onsubmit:"search(searchBox)"
+  onsubmit:"search(searchBox.value)"
 });
 
 const searchBox = document.createElement("input");
@@ -285,24 +285,16 @@ function pushData(data, id) {
 SWAP CARDS - When search form is submitted hide/show cards based on input
 ******************************************/
 function search(query) {
-  const names = gallery.querySelectorAll("#name");
+  const names = gallery.querySelectorAll("#name"); 
   for (i = 0; i < names.length; i++) {
-    names[i].classList.remove("match");
-    if (
-      query.value.length != 0 &&
-      names[i].textContent.toLowerCase().includes(query.value.toLowerCase())
-    ) {
-      names[i].classList.add("match");
+    if (query.length != 0 && (names[i].textContent.toLowerCase().includes(query.toLowerCase()))) {
+      
+      names[i].parentNode.parentNode.classList.add('match');
+    } 
+    if(!(names[i].parentNode.parentNode.classList.contains('match'))){
+      names[i].parentNode.parentNode.style.display = 'none';
     }
-  }
-  for (i = 0; i<names.length; i++){
-    if (!(names[i].classList.contains('match'))){
-      names[i].parentElement.parentElement.style.display  = 'none';
-    }
-    
-  }
-
-  console.log(query); // search box input
+   }
 }
 
 
@@ -314,4 +306,3 @@ function setAttributes(element, attributes) {
     element.setAttribute(key, attributes[key]);
   }
 }
-
