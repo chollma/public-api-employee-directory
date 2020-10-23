@@ -14,7 +14,7 @@ const form = document.createElement("form");
 setAttributes(form, {
   action: "#",
   method: "get",
-  onsubmit:"search(searchBox.value)"
+  onsubmit: "search(searchBox.value)",
 });
 
 const searchBox = document.createElement("input");
@@ -31,22 +31,19 @@ setAttributes(searchSubmit, {
   value: "Go",
   id: "search-submit",
   class: "search-submit",
-  
 });
 
 form.appendChild(searchBox);
 form.appendChild(searchSubmit);
 searchDiv.appendChild(form);
 
-
-
 /******************************************
 MAKE API REQUEST - Request 12 records from the US
 ******************************************/
 
 fetch("https://randomuser.me/api/?results=12&nat=us&noinfo")
-  .then(response => response.json())
-  .then(data => generateCard(data.results))
+  .then((response) => response.json())
+  .then((data) => generateCard(data.results))
   .catch((error) => {
     const header = document.querySelector("header");
     header.insertAdjacentHTML("afterend", "<p>An error has occurred</p>");
@@ -209,6 +206,7 @@ setAttributes(modalNextBtn, {
   id: "modal-next",
   class: "modal-next btn",
 });
+
 modalNextBtn.insertAdjacentHTML("beforeend", "Next");
 const modalElements = [
   modalImg,
@@ -240,6 +238,8 @@ SWAP MODAL DATA - Push response data into empty modal elements
 ******************************************/
 
 function pushData(data, id) {
+  modal.setAttribute("id", id);
+  mData = data;
   modalImg.setAttribute("src", data[id].picture.large);
   modalHeader.innerHTML = data[id].name.first + " " + data[id].name.last;
   modalEmail.innerHTML = data[id].email;
@@ -265,38 +265,43 @@ function pushData(data, id) {
     year: "numeric",
   });
   modalBirthday.innerHTML = "Birthday: " + cleanBirthday;
-
-  modalPrevBtn.addEventListener("click", () => {
-    if (id > 0) {
-      id--;
-      pushData(data, id);
-    }
-  });
-
-  modalNextBtn.addEventListener("click", () => {
-    if (id < 11) {
-      id++;
-      pushData(data, id);
-    }
-  });
 }
+
+/******************************************
+PREV/NEXT - Swap records without erroring out in the console
+******************************************/
+modalPrevBtn.addEventListener("click", () => {
+  let current = modal.getAttribute("id");
+  if (current != 0) {
+    current--;
+    pushData(mData, current);
+  }
+});
+
+modalNextBtn.addEventListener("click", () => {
+  let current = modal.getAttribute("id");
+  if (current != 11) {
+    current++;
+    pushData(mData, current);
+  }
+});
 
 /******************************************
 SWAP CARDS - When search form is submitted hide/show cards based on input
 ******************************************/
 function search(query) {
-  const names = gallery.querySelectorAll("#name"); 
+  const names = gallery.querySelectorAll("#name");
   for (i = 0; i < names.length; i++) {
-    if (query.length != 0 && (names[i].textContent.toLowerCase().includes(query.toLowerCase()))) {
-      
-      names[i].parentNode.parentNode.classList.add('match');
-    } 
-    if(!(names[i].parentNode.parentNode.classList.contains('match'))){
-      names[i].parentNode.parentNode.style.display = 'none';
+    if (
+      query.length != 0 &&
+      !names[i].textContent.toLowerCase().includes(query.toLowerCase())
+    ) {
+      names[i].parentNode.parentNode.style.display = "none";
+    } else {
+      names[i].parentNode.parentNode.style.display = null;
     }
-   }
+  }
 }
-
 
 /******************************************
 HELPER FUNCTIONS
