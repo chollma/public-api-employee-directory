@@ -33,6 +33,13 @@ setAttributes(searchSubmit, {
   class: "search-submit",
 });
 
+searchBox.addEventListener('keyup', (event)=> {
+  if (event.keyCode === 13){
+    event.preventDefault();
+    searchSubmit.click();
+  } 
+  });
+
 form.appendChild(searchBox);
 form.appendChild(searchSubmit);
 searchDiv.appendChild(form);
@@ -195,7 +202,7 @@ setAttributes(prevNextContainer, {
 const modalPrevBtn = document.createElement("button");
 setAttributes(modalPrevBtn, {
   type: "button",
-  id: "modal-next",
+  id: "modal-prev",
   class: "modal-next btn",
 });
 modalPrevBtn.insertAdjacentHTML("beforeend", "Prev");
@@ -272,17 +279,26 @@ PREV/NEXT - Swap records without erroring out in the console
 ******************************************/
 modalPrevBtn.addEventListener("click", () => {
   let current = modal.getAttribute("id");
+  let next = document.getElementById("modal-next");
+  next.style.display = null;
   if (current != 0) {
     current--;
     pushData(mData, current);
+    console.log(current);
+  } else if (current == 0) {
+    modalPrevBtn.style.display = "none";
   }
 });
 
 modalNextBtn.addEventListener("click", () => {
   let current = modal.getAttribute("id");
+  let prev = document.getElementById("modal-prev");
+  prev.style.display = null;
   if (current != 11) {
     current++;
     pushData(mData, current);
+  } else if (current == 11) {
+    modalNextBtn.style.display = "none";
   }
 });
 
@@ -291,6 +307,7 @@ SWAP CARDS - When search form is submitted hide/show cards based on input
 ******************************************/
 function search(query) {
   const names = gallery.querySelectorAll("#name");
+
   for (i = 0; i < names.length; i++) {
     if (
       query.length != 0 &&
